@@ -1,0 +1,45 @@
+1. best time to buy stock 1 (greedy approach take minimum price to buy so far seen and check with each day to see which has max profit)
+    **The core idea**
+
+    As you walk through the price list from left to right, keep two thoughts in your head:
+
+        What is the cheapest price I have seen so far?
+        This is your best possible buy up to today.
+
+        If I sell today, how much profit would I make using that cheapest buy?
+        This is today_price − min_price_so_far.
+
+2. best time to buy stock 2 (greedy approach take any rising edge)
+    **core idea**
+
+        If price[i+1] > price[i] → take that profit
+        If price[i+1] ≤ price[i] → do nothing
+
+        You don’t care where the climb starts or ends.
+        You care about positive edges.
+    
+3. best time to buy stock 3
+class Solution {
+public:
+    int solve(int i, int buy, int cap, vector<int>& prices, vector<vector<vector<int>>>& dp){
+        if(i == prices.size()) return 0;
+        if(cap == 0) return 0;
+        if(dp[i][buy][cap] != -1) return dp[i][buy][cap];
+        if(buy){
+            return dp[i][buy][cap] = max((-prices[i] + solve(i+1, 0, cap, prices,dp)), (0 + solve(i+1, 1, cap, prices,dp)));
+        }
+        return dp[i][buy][cap] = max((prices[i] + solve(i+1, 1, cap-1, prices,dp)), (0 + solve(i+1, 0, cap, prices,dp)));
+    }
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+
+        vector<vector<vector<int>>> dp(n , vector<vector<int>>(2, vector<int>(3,-1)));
+        return solve(0,1,2,prices, dp);
+    }
+};
+
+
+4. best time to buy stcok 4 is same as 3 but replace 2 with keep
+
+5. 
+
